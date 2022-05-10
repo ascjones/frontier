@@ -1,4 +1,4 @@
-use pallet_evm::{Context, Precompile, PrecompileResult, PrecompileSet};
+use pallet_evm::{Context, Precompile, PrecompileResult, PrecompileSet, PrecompileHandle};
 use sp_core::H160;
 use sp_std::marker::PhantomData;
 
@@ -28,6 +28,7 @@ where
 {
 	fn execute(
 		&self,
+		handle: &mut impl PrecompileHandle,
 		address: H160,
 		input: &[u8],
 		target_gas: Option<u64>,
@@ -36,17 +37,17 @@ where
 	) -> Option<PrecompileResult> {
 		match address {
 			// Ethereum precompiles :
-			a if a == hash(1) => Some(ECRecover::execute(input, target_gas, context, is_static)),
-			a if a == hash(2) => Some(Sha256::execute(input, target_gas, context, is_static)),
-			a if a == hash(3) => Some(Ripemd160::execute(input, target_gas, context, is_static)),
-			a if a == hash(4) => Some(Identity::execute(input, target_gas, context, is_static)),
-			a if a == hash(5) => Some(Modexp::execute(input, target_gas, context, is_static)),
+			a if a == hash(1) => Some(ECRecover::execute(handle, input, target_gas, context, is_static)),
+			a if a == hash(2) => Some(Sha256::execute(handle, input, target_gas, context, is_static)),
+			a if a == hash(3) => Some(Ripemd160::execute(handle, input, target_gas, context, is_static)),
+			a if a == hash(4) => Some(Identity::execute(handle, input, target_gas, context, is_static)),
+			a if a == hash(5) => Some(Modexp::execute(handle, input, target_gas, context, is_static)),
 			// Non-Frontier specific nor Ethereum precompiles :
 			a if a == hash(1024) => {
-				Some(Sha3FIPS256::execute(input, target_gas, context, is_static))
+				Some(Sha3FIPS256::execute(handle, input, target_gas, context, is_static))
 			}
 			a if a == hash(1025) => Some(ECRecoverPublicKey::execute(
-				input, target_gas, context, is_static,
+				handle, input, target_gas, context, is_static,
 			)),
 			_ => None,
 		}

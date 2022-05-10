@@ -57,6 +57,10 @@ impl PrecompileHandle for MockHandle {
 	fn log(&mut self, _: H160, _: Vec<H256>, _: Vec<u8>) {
 		unimplemented!()
 	}
+
+	fn remaining_gas(&self) -> u64 {
+		unimplemented!()
+	}
 }
 
 /// Tests a precompile against the ethereum consensus tests defined in the given file at filepath.
