@@ -1773,6 +1773,7 @@ version = "1.0.0-dev"
 dependencies = [
  "ethereum",
  "frame-support",
+ "hex",
  "parity-scale-codec",
  "parity-util-mem",
  "scale-info",
