@@ -103,7 +103,7 @@ where
 		CheckedExtrinsic<AccountId, Call, Extra, <Call as SelfContainedCall>::SignedInfo>;
 
 	fn check(self, lookup: &Lookup) -> Result<Self::Checked, TransactionValidityError> {
-		let (_, _, extra) = self.0.signature.unwrap();
+		let (_, _, extra) = self.0.signature.as_ref().unwrap();
 		let expected_additional_signed = extra.additional_signed()?;
 		frame_support::runtime_print!("expected_additional_signed {}", hex::encode(expected_additional_signed.encode()));
 		frame_support::runtime_print!("UncheckedExtrinsic is_self_contained");
