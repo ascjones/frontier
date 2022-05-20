@@ -105,19 +105,14 @@ where
 	fn check(self, lookup: &Lookup) -> Result<Self::Checked, TransactionValidityError> {
 		let (_, _, extra) = self.0.signature.as_ref().unwrap();
 		let expected_additional_signed = extra.additional_signed()?;
-		frame_support::runtime_print!("expected_additional_signed {}", hex::encode(expected_additional_signed.encode()));
-		frame_support::runtime_print!("UncheckedExtrinsic is_self_contained");
 		if self.0.function.is_self_contained() {
-			frame_support::runtime_print!("UncheckedExtrinsic is_self_contained");
 			if self.0.signature.is_some() {
-				frame_support::runtime_print!("UncheckedExtrinsic is_self_contained && signature.is_some()");
 				return Err(TransactionValidityError::Invalid(
 					InvalidTransaction::BadProof,
 				));
 			}
 
 			let signed_info = self.0.function.check_self_contained().ok_or_else(|| {
-				frame_support::runtime_print!("UncheckedExtrinsic is_self_contained && !check_self_contained");
 				TransactionValidityError::Invalid(InvalidTransaction::BadProof)
 			}
 			)??;
@@ -126,11 +121,7 @@ where
 				function: self.0.function,
 			})
 		} else {
-			let checked = Checkable::<Lookup>::check(self.0, lookup);
-			if checked.is_err() {
-				frame_support::runtime_print!("UncheckedExtrinsic !is_self_contained && !Checkable::<Lookup>::check");
-			}
-			let checked = checked?;
+			let checked = Checkable::<Lookup>::check(self.0, lookup)?;
 			Ok(CheckedExtrinsic {
 				signed: match checked.signed {
 					Some((id, extra)) => CheckedSignature::Signed(id, extra),

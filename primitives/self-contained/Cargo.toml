@@ -21,7 +21,6 @@ sp-io = { version = "6.0.0", git = "https://github.com/purestake/substrate", def
 sp-runtime = { version = "6.0.0", git = "https://github.com/purestake/substrate", default-features = false , branch = "moonbeam-polkadot-v0.9.19" }
 
 frame-support = { version = "4.0.0-dev", git = "https://github.com/purestake/substrate", default-features = false , branch = "moonbeam-polkadot-v0.9.19" }
-hex = { version = "0.4.3", default-features = false }
 
 [features]
 default = ["std"]
@@ -35,5 +34,4 @@ std = [
 
 	"sp-debug-derive/std",
 	"sp-runtime/std",
-	"frame-support/std",
 ]
